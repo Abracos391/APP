@@ -11,29 +11,75 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir arquivos estáticos (imagens geradas)
+// Servir uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Rotas da API
+// Rotas API
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/imagens', require('./routes/imagens'));
 app.use('/api/processamento', require('./routes/processamento'));
 app.use('/api/pagamento', require('./routes/pagamento'));
 
-// Tentar registrar rota admin com tratamento de erro
 try {
   app.use('/api/admin', require('./routes/admin'));
 } catch (e) {
   console.warn('rota /api/admin não registrada:', e.message);
 }
 
-// Health check e rota padrão da API
+// Health check
 app.get('/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Rota raiz da API
+app.get('/', (req, res) => {
+  res.json({ mensagem: '💌 Bem-vindo ao Gerador de Abraços API', versao: '1.0.0', status: 'online' });
+});
+
+// Servir frontend React (build)
+const buildPath = path.join(__dirname, '../frontend/build');
+app.use(express.static(buildPath));
+
+// Rota coringa SPA
+app.get('*', (req, res) => {
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ erro: 'Rota não encontrada' });
+  }
+  const indexFile = path.join(buildPath, 'index.html');
+  res.sendFile(indexFile, (error) => {
+    if (error) {
+      res.status(200).json({ mensagem: '💌 Bem-vindo ao Gerador de Abraços API', versao: '1.0.0', status: 'online' });
+    }
   });
 });
+
+// Erros 404
+app.use((req, res) => res.status(404).json({ erro: 'Rota não encontrada' }));
+
+// Erros gerais
+app.use((err, req, res, next) => {
+  console.error('Erro:', err);
+  res.status(500).json({
+    erro: 'Erro interno do servidor',
+    detalhes: process.env.NODE_ENV === 'development' ? err.message : undefined,
+  });
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`Rotas disponíveis:`);
+  console.log(`POST /api/auth/cadastro`);
+  console.log(`POST /api/auth/login`);
+  console.log(`GET  /api/auth/perfil`);
+  console.log(`GET  /api/auth/verificar`);
+  console.log(`POST /api/imagens/gerar`);
+  console.log(`GET  /api/imagens`);
+  console.log(`GET  /api/imagens/:id`);
+  console.log(`DELETE /api/imagens/:id`);
+});
+
+module.exports = app;
 
 app.get('/', (req, res) => {
   res.json({
