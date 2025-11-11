@@ -14,26 +14,87 @@ app.use(express.urlencoded({ extended: true }));
 // Servir arquivos estáticos (imagens geradas)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Rotas
+// Rotas da API
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/imagens', require('./routes/imagens'));
 app.use('/api/processamento', require('./routes/processamento'));
 app.use('/api/pagamento', require('./routes/pagamento'));
-app.use('/api/admin', require('./routes/admin'));
 
-// Rota de teste
-app.get('/', (req, res) => {
-  res.json({ 
-    mensagem: '💌 Bem-vindo ao Gerador de Abraços API',
-    versao: '1.0.0',
-    status: 'online'
+// Tentar registrar rota admin com tratamento de erro
+try {
+  app.use('/api/admin', require('./routes/admin'));
+} catch (e) {
+  console.warn('rota /api/admin não registrada:', e.message);
+}
+
+// Health check e rota padrão da API
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
   });
 });
 
-// Rota de health check
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'ok',
+app.get('/', (req, res) => {
+  res.json({
+    mensagem: '💌 Bem-vindo ao Gerador de Abraços API',
+    versao: '1.0.0',
+    status: 'online',
+  });
+});
+
+// Servir frontend build (alterar caminho conforme sua estrutura)
+const buildPath = path.join(__dirname, '../frontend/build');
+app.use(express.static(buildPath));
+
+// Rota coringa para SPA
+app.get('*', (req, res) => {
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ erro: 'Rota não encontrada' });
+  }
+  const indexFile = path.join(buildPath, 'index.html');
+  res.sendFile(indexFile, (err) => {
+    if (err) {
+      return res.status(200).json({
+        mensagem: '💌 Bem-vindo ao Gerador de Abraços API',
+        versao: '1.0.0',
+        status: 'online',
+      });
+    }
+  });
+});
+
+// Tratamento de erros 404 para rotas não encontradas
+app.use((req, res) => {
+  res.status(404).json({ erro: 'Rota não encontrada' });
+});
+
+// Tratamento de erros gerais
+app.use((err, req, res, next) => {
+  console.error('Erro:', err);
+  res.status(500).json({
+    erro: 'Erro interno do servidor',
+    detalhes: process.env.NODE_ENV === 'development' ? err.message : undefined,
+  });
+});
+
+// Iniciar servidor
+app.listen(PORT, () => {
+  console.log(`\n🚀 Servidor rodando na porta ${PORT}`);
+  console.log(`📍 http://localhost:${PORT}`);
+  console.log(`\n✅ Rotas disponíveis:`);
+  console.log(`   POST /api/auth/cadastro - Cadastrar usuário`);
+  console.log(`   POST /api/auth/login - Fazer login`);
+  console.log(`   GET  /api/auth/perfil - Ver perfil (autenticado)`);
+  console.log(`   GET  /api/auth/verificar - Verificar token (autenticado)`);
+  console.log(`   POST /api/imagens/gerar - Gerar imagem (autenticado)`);
+  console.log(`   GET  /api/imagens - Listar imagens (autenticado)`);
+  console.log(`   GET  /api/imagens/:id - Buscar imagem (autenticado)`);
+  console.log(`   DELETE /api/imagens/:id - Deletar imagem (autenticado)`);
+  console.log(`\n💡 Use Ctrl+C para parar o servidor\n`);
+});
+
+module.exports = app;
     timestamp: new Date().toISOString()
   });
 });
