@@ -11,29 +11,51 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir uploads
+// Servir frontend (HTML, CSS, JS)
+app.use(express.static(path.join(__dirname, '../public')));
+
+// Servir uploads (imagens geradas)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Rotas API
+// Rotas da API
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/imagens', require('./routes/imagens'));
 app.use('/api/processamento', require('./routes/processamento'));
 app.use('/api/pagamento', require('./routes/pagamento'));
+app.use('/api/admin', require('./routes/admin'));
 
-try {
-  app.use('/api/admin', require('./routes/admin'));
-} catch (e) {
-  console.warn('rota /api/admin não registrada:', e.message);
-}
+// Rota principal (para frontend)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
 
 // Health check
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString()
+  });
 });
 
-// Rota raiz da API
-app.get('/', (req, res) => {
-  res.json({ mensagem: '💌 Bem-vindo ao Gerador de Abraços API', versao: '1.0.0', status: 'online' });
+// Tratamento 404
+app.use((req, res) => {
+  res.status(404).json({ erro: 'Rota não encontrada' });
+});
+
+// Tratamento de erros gerais
+app.use((err, req, res, next) => {
+  console.error('Erro:', err);
+  res.status(500).json({
+    erro: 'Erro interno do servidor',
+    detalhes: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
+});
+
+// Iniciar servidor
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor rodando na porta ${PORT}`);
+  console.log(`🌍 Frontend disponível em http://localhost:${PORT}`);
+});
 });
 
 // Servir frontend React (build)
