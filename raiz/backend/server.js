@@ -6,34 +6,38 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middlewares
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir arquivos estáticos (imagens geradas)
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Rotas de exemplo — comente as que não existirem
+// app.use('/api/auth', require('./routes/auth'));
+// app.use('/api/imagens', require('./routes/imagens'));
+// app.use('/api/processamento', require('./routes/processamento'));
+// app.use('/api/pagamento', require('./routes/pagamento'));
+// app.use('/api/admin', require('./routes/admin'));
 
-// Rotas da API
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/imagens', require('./routes/imagens'));
-app.use('/api/processamento', require('./routes/processamento'));
-app.use('/api/pagamento', require('./routes/pagamento'));
-app.use('/api/admin', require('./routes/admin'));
-
-// Rota de health check (defina antes da rota coringa)
-app.get('/health', (req, res) => {
+app.get('/', (req, res) => {
   res.json({
-    status: 'ok',
-    timestamp: new Date().toISOString()
+    status: 'online',
+    mensagem: '🚀 Gerador de Abraços API está ativa!'
   });
 });
 
-// ==============================
-// Servir FRONTEND (build do React/Vue/etc.)
-// ==============================
-/*
-  Ajuste o caminho se a pasta do frontend tiver nome diferente.
+// Tratamento de erros 404
+app.use((req, res) => {
+  res.status(404).json({ erro: 'Rota não encontrada' });
+});
+
+// Tratamento de erros gerais
+app.use((err, req, res, next) => {
+  console.error('Erro interno:', err);
+  res.status(500).json({ erro: 'Erro interno do servidor' });
+});
+
+app.listen(PORT, () => {
+  console.log(`✅ Servidor rodando na porta ${PORT}`);
+});
   Estrutura esperada:
     raiz/
       backend/  <-- __dirname aqui
