@@ -4,7 +4,7 @@
 
 // ⚠️ IMPORTANTE: Altere a URL abaixo para a URL do seu backend no Render
 // Exemplo: 'https://gerador-de-abracos.onrender.com'
-const API_URL = 'COLE_SUA_URL_DO_RENDER_AQUI';
+const API_URL = 'https://SUA-URL-DO-RENDER.onrender.com';
 document.addEventListener('DOMContentLoaded', function() {
     const cadastroForm = document.getElementById('cadastroForm');
     
