@@ -6,25 +6,71 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middlewares
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rotas de exemplo — comente as que não existirem
-// app.use('/api/auth', require('./routes/auth'));
-// app.use('/api/imagens', require('./routes/imagens'));
-// app.use('/api/processamento', require('./routes/processamento'));
-// app.use('/api/pagamento', require('./routes/pagamento'));
-// app.use('/api/admin', require('./routes/admin'));
+// Servir arquivos estáticos (imagens geradas)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.get('/', (req, res) => {
-  res.json({
-    status: 'online',
-    mensagem: '🚀 Gerador de Abraços API está ativa!'
+// Rotas da API (comente/remova se algum arquivo de rota não existir)
+try {
+  app.use('/api/auth', require('./routes/auth'));
+} catch (e) {
+  console.warn('rota /api/auth não registrada:', e.message);
+}
+try {
+  app.use('/api/imagens', require('./routes/imagens'));
+} catch (e) {
+  console.warn('rota /api/imagens não registrada:', e.message);
+}
+try {
+  app.use('/api/processamento', require('./routes/processamento'));
+} catch (e) {
+  console.warn('rota /api/processamento não registrada:', e.message);
+}
+try {
+  app.use('/api/pagamento', require('./routes/pagamento'));
+} catch (e) {
+  console.warn('rota /api/pagamento não registrada:', e.message);
+}
+try {
+  app.use('/api/admin', require('./routes/admin'));
+} catch (e) {
+  console.warn('rota /api/admin não registrada:', e.message);
+}
+
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Servir frontend build (ajuste o nome da pasta se necessário)
+// Espera-se: raiz/frontend/build/index.html
+const buildPath = path.join(__dirname, '../frontend/build');
+app.use(express.static(buildPath));
+
+// Rota coringa: se for rota /api/* responde 404; caso contrário serve index.html
+app.get('*', (req, res) => {
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ erro: 'Rota não encontrada' });
+  }
+
+  const indexFile = path.join(buildPath, 'index.html');
+  // enviar index.html se existir, senão retornar uma mensagem simples
+  return res.sendFile(indexFile, (err) => {
+    if (err) {
+      return res.status(200).json({
+        mensagem: '💌 Bem-vindo ao Gerador de Abraços API',
+        versao: '1.0.0',
+        status: 'online'
+      });
+    }
   });
 });
 
-// Tratamento de erros 404
+// Tratamento de erros 404 (fallback)
 app.use((req, res) => {
   res.status(404).json({ erro: 'Rota não encontrada' });
 });
@@ -32,8 +78,19 @@ app.use((req, res) => {
 // Tratamento de erros gerais
 app.use((err, req, res, next) => {
   console.error('Erro interno:', err);
-  res.status(500).json({ erro: 'Erro interno do servidor' });
+  res.status(500).json({
+    erro: 'Erro interno do servidor',
+    detalhes: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
 });
+
+// Iniciar servidor
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`Rotas principais: /api/* e / (SPA)`);
+});
+
+module.exports = app;
 
 app.listen(PORT, () => {
   console.log(`✅ Servidor rodando na porta ${PORT}`);
