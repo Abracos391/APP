@@ -1,357 +1,65 @@
-    detalhes: process.env.NODE_ENV === 'development' ? err.message : undefined,
-  });
-});
+cat > raiz/backend/server.js <<'EOF'
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-  console.log(`Rotas disponíveis:`);
-  console.log(`POST /api/auth/cadastro`);
-  console.log(`POST /api/auth/login`);
-  console.log(`GET  /api/auth/perfil`);
-  console.log(`GET  /api/auth/verificar`);
-  console.log(`POST /api/imagens/gerar`);
-  console.log(`GET  /api/imagens`);
-  console.log(`GET  /api/imagens/:id`);
-  console.log(`DELETE /api/imagens/:id`);
-});
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-module.exports = app;
+// Middlewares
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.json({
-    mensagem: '💌 Bem-vindo ao Gerador de Abraços API',
-    versao: '1.0.0',
-    status: 'online',
-  });
-});
+// Servir frontend estático (pasta public ao lado de backend)
+app.use(express.static(path.join(__dirname, '../public')));
 
-// Servir frontend build (alterar caminho conforme sua estrutura)
-const buildPath = path.join(__dirname, '../frontend/build');
-app.use(express.static(buildPath));
+// Servir uploads (imagens geradas)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Rota coringa para SPA
-app.get('*', (req, res) => {
-  if (req.path.startsWith('/api')) {
-    return res.status(404).json({ erro: 'Rota não encontrada' });
+// Rotas da API - carregamento seguro para não quebrar se arquivo faltar
+const safeRequire = (file, mount) => {
+  try {
+    const router = require(file);
+    app.use(mount, router);
+    console.log(`Rota registrada: ${mount}`);
+  } catch (err) {
+    console.warn(`Rota não registrada (${mount}): ${err.message}`);
   }
-  const indexFile = path.join(buildPath, 'index.html');
-  res.sendFile(indexFile, (err) => {
-    if (err) {
-      return res.status(200).json({
-        mensagem: '💌 Bem-vindo ao Gerador de Abraços API',
-        versao: '1.0.0',
-        status: 'online',
-      });
-    }
-  });
+};
+
+safeRequire('./routes/auth', '/api/auth');
+safeRequire('./routes/imagens', '/api/imagens');
+safeRequire('./routes/processamento', '/api/processamento');
+safeRequire('./routes/pagamento', '/api/pagamento');
+safeRequire('./routes/admin', '/api/admin');
+
+// Rota principal - serve index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-// Tratamento de erros 404 para rotas não encontradas
-app.use((req, res) => {
-  res.status(404).json({ erro: 'Rota não encontrada' });
-});
-
-// Tratamento de erros gerais
-app.use((err, req, res, next) => {
-  console.error('Erro:', err);
-  res.status(500).json({
-    erro: 'Erro interno do servidor',
-    detalhes: process.env.NODE_ENV === 'development' ? err.message : undefined,
-  });
-});
-
-// Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`\n🚀 Servidor rodando na porta ${PORT}`);
-  console.log(`📍 http://localhost:${PORT}`);
-  console.log(`\n✅ Rotas disponíveis:`);
-  console.log(`   POST /api/auth/cadastro - Cadastrar usuário`);
-  console.log(`   POST /api/auth/login - Fazer login`);
-  console.log(`   GET  /api/auth/perfil - Ver perfil (autenticado)`);
-  console.log(`   GET  /api/auth/verificar - Verificar token (autenticado)`);
-  console.log(`   POST /api/imagens/gerar - Gerar imagem (autenticado)`);
-  console.log(`   GET  /api/imagens - Listar imagens (autenticado)`);
-  console.log(`   GET  /api/imagens/:id - Buscar imagem (autenticado)`);
-  console.log(`   DELETE /api/imagens/:id - Deletar imagem (autenticado)`);
-  console.log(`\n💡 Use Ctrl+C para parar o servidor\n`);
-});
-
-module.exports = app;
-    timestamp: new Date().toISOString()
-  });
-});
-
-// Tratamento de erros 404
-app.use((req, res) => {
-  res.status(404).json({ 
-    erro: 'Rota não encontrada' 
-  });
-});
-
-// Tratamento de erros gerais
-app.use((err, req, res, next) => {
-  console.error('Erro:', err);
-  res.status(500).json({ 
-    erro: 'Erro interno do servidor',
-    detalhes: process.env.NODE_ENV === 'development' ? err.message : undefined
-  });
-});
-
-// Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`\n🚀 Servidor rodando na porta ${PORT}`);
-  console.log(`📍 http://localhost:${PORT}`);
-  console.log(`\n✅ Rotas disponíveis:`);
-  console.log(`   POST /api/auth/cadastro - Cadastrar usuário`);
-  console.log(`   POST /api/auth/login - Fazer login`);
-  console.log(`   GET  /api/auth/perfil - Ver perfil (autenticado)`);
-  console.log(`   GET  /api/auth/verificar - Verificar token (autenticado)`);
-  console.log(`   POST /api/imagens/gerar - Gerar imagem (autenticado)`);
-  console.log(`   GET  /api/imagens - Listar imagens (autenticado)`);
-  console.log(`   GET  /api/imagens/:id - Buscar imagem (autenticado)`);
-  console.log(`   DELETE /api/imagens/:id - Deletar imagem (autenticado)`);
-  console.log(`\n💡 Use Ctrl+C para parar o servidor\n`);
-});
-
-module.exports = app;  }
-
-  const indexFile = path.join(buildPath, 'index.html');
-  return res.sendFile(indexFile, (err) => {
-    if (err) {
-      // Se index.html não existir (por exemplo, ainda não fez build), retorna boas-vindas JSON
-      return res.status(200).json({
-        mensagem: '💌 Bem-vindo ao Gerador de Abraços API',
-        versao: '1.0.0',
-        status: 'online'
-      });
-    }
-  });
-});
-
-// Tratamento de erros 404 (fallback)
-app.use((req, res) => {
-  res.status(404).json({ erro: 'Rota não encontrada' });
-});
-
-// Tratamento de erros gerais
-app.use((err, req, res, next) => {
-  console.error('Erro interno:', err);
-  res.status(500).json({
-    erro: 'Erro interno do servidor',
-    detalhes: process.env.NODE_ENV === 'development' ? err.message : undefined
-  });
-});
-
-// Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-  console.log(`Rotas principais: /api/* e / (SPA)`);
-});
-
-module.exports = app;
-}
-try {
-  app.use('/api/admin', require('./routes/admin'));
-} catch (e) {
-  console.warn('rota /api/admin não registrada:', e.message);
-}
-
-// Health check
+// Health
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Servir frontend build (ajuste o nome da pasta se necessário)
-// Espera-se: raiz/frontend/build/index.html
-const buildPath = path.join(__dirname, '../frontend/build');
-app.use(express.static(buildPath));
-
-// Rota coringa: se for rota /api/* responde 404; caso contrário serve index.html
-app.get('*', (req, res) => {
-  if (req.path.startsWith('/api')) {
-    return res.status(404).json({ erro: 'Rota não encontrada' });
-  }
-
-  const indexFile = path.join(buildPath, 'index.html');
-  // enviar index.html se existir, senão retornar uma mensagem simples
-  return res.sendFile(indexFile, (err) => {
-    if (err) {
-      return res.status(200).json({
-        mensagem: '💌 Bem-vindo ao Gerador de Abraços API',
-        versao: '1.0.0',
-        status: 'online'
-      });
-    }
-  });
-});
-
-// Tratamento de erros 404 (fallback)
+// 404 fallback
 app.use((req, res) => {
   res.status(404).json({ erro: 'Rota não encontrada' });
 });
 
-// Tratamento de erros gerais
+// Error handler
 app.use((err, req, res, next) => {
   console.error('Erro interno:', err);
-  res.status(500).json({
-    erro: 'Erro interno do servidor',
-    detalhes: process.env.NODE_ENV === 'development' ? err.message : undefined
-  });
+  res.status(500).json({ erro: 'Erro interno do servidor' });
 });
 
-// Iniciar servidor
+// Start
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
-  console.log(`Rotas principais: /api/* e / (SPA)`);
 });
 
 module.exports = app;
-
-app.listen(PORT, () => {
-  console.log(`✅ Servidor rodando na porta ${PORT}`);
-});
-  Estrutura esperada:
-    raiz/
-      backend/  <-- __dirname aqui
-      frontend/ <-- build será frontend/build
-*/
-const buildPath = path.join(__dirname, '../frontend/build');
-
-// Se existir o build, sirva os arquivos estáticos
-app.use(express.static(buildPath));
-
-// Rota coringa para servir index.html da SPA
-app.get('*', (req, res) => {
-  // Mantém comportamento das rotas /api/*
-  if (req.path.startsWith('/api')) {
-    return res.status(404).json({ erro: 'Rota não encontrada' });
-  }
-
-  // Se não existir o arquivo index.html (ex.: ainda não fez build), responde com mensagem útil
-  const indexFile = path.join(buildPath, 'index.html');
-  return res.sendFile(indexFile, (err) => {
-    if (err) {
-      // Se não encontrou index.html, retorna informação simples (útil durante desenvolvimento)
-      return res.status(200).json({
-        mensagem: '💌 Bem-vindo ao Gerador de Abraços API',
-        versao: '1.0.0',
-        status: 'online'
-      });
-    }
-  });
-});
-
-// Tratamento de erros 404 (para rotas não capturadas por /api e não SPA)
-app.use((req, res) => {
-  res.status(404).json({ erro: 'Rota não encontrada' });
-});
-
-// Tratamento de erros gerais
-app.use((err, req, res, next) => {
-  console.error('Erro:', err);
-  res.status(500).json({
-    erro: 'Erro interno do servidor',
-    detalhes: process.env.NODE_ENV === 'development' ? err.message : undefined
-  });
-});
-
-// Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`\n🚀 Servidor rodando na porta ${PORT}`);
-  console.log(`📍 http://localhost:${PORT}`);
-  console.log(`\n✅ Rotas disponíveis:`);
-  console.log(`   POST /api/auth/cadastro - Cadastrar usuário`);
-  console.log(`   POST /api/auth/login - Fazer login`);
-  console.log(`   GET  /api/auth/perfil - Ver perfil (autenticado)`);
-  console.log(`   GET  /api/auth/verificar - Verificar token (autenticado)`);
-  console.log(`   POST /api/imagens/gerar - Gerar imagem (autenticado)`);
-  console.log(`   GET  /api/imagens - Listar imagens (autenticado)`);
-  console.log(`   GET  /api/imagens/:id - Buscar imagem (autenticado)`);
-  console.log(`   DELETE /api/imagens/:id - Deletar imagem (autenticado)`);
-  console.log(`\n💡 Use Ctrl+C para parar o servidor\n`);
-});
-
-module.exports = app;
-
-// ==============================
-// 🔹 ROTAS DE TESTE E SAÚDE
-// ==============================
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'ok',
-    timestamp: new Date().toISOString()
-  });
-});
-
-// ==============================
-// 🔹 TRATAMENTO DE ERROS
-// ==============================
-app.use((req, res) => {
-  res.status(404).json({ erro: 'Rota não encontrada' });
-});
-
-app.use((err, req, res, next) => {
-  console.error('Erro:', err);
-  res.status(500).json({ 
-    erro: 'Erro interno do servidor',
-    detalhes: process.env.NODE_ENV === 'development' ? err.message : undefined
-  });
-});
-
-// ==============================
-// 🔹 INICIAR SERVIDOR
-// ==============================
-app.listen(PORT, () => {
-  console.log(`\n🚀 Servidor rodando na porta ${PORT}`);
-  console.log(`📍 http://localhost:${PORT}`);
-  console.log(`\n✅ Rotas disponíveis:`);
-  console.log(`   POST /api/auth/cadastro - Cadastrar usuário`);
-  console.log(`   POST /api/auth/login - Fazer login`);
-  console.log(`   GET  /api/auth/perfil - Ver perfil (autenticado)`);
-  console.log(`   GET  /api/auth/verificar - Verificar token (autenticado)`);
-  console.log(`   POST /api/imagens/gerar - Gerar imagem (autenticado)`);
-  console.log(`   GET  /api/imagens - Listar imagens (autenticado)`);
-  console.log(`   GET  /api/imagens/:id - Buscar imagem (autenticado)`);
-  console.log(`   DELETE /api/imagens/:id - Deletar imagem (autenticado)`);
-  console.log(`\n💡 Use Ctrl+C para parar o servidor\n`);
-});
-
-module.exports = app;
-    timestamp: new Date().toISOString()
-  });
-});
-
-// Tratamento de erros 404
-app.use((req, res) => {
-  res.status(404).json({ 
-    erro: 'Rota não encontrada' 
-  });
-});
-
-// Tratamento de erros gerais
-app.use((err, req, res, next) => {
-  console.error('Erro:', err);
-  res.status(500).json({ 
-    erro: 'Erro interno do servidor',
-    detalhes: process.env.NODE_ENV === 'development' ? err.message : undefined
-  });
-});
-
-// Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`\n🚀 Servidor rodando na porta ${PORT}`);
-  console.log(`📍 http://localhost:${PORT}`);
-  console.log(`\n✅ Rotas disponíveis:`);
-  console.log(`   POST /api/auth/cadastro - Cadastrar usuário`);
-  console.log(`   POST /api/auth/login - Fazer login`);
-  console.log(`   GET  /api/auth/perfil - Ver perfil (autenticado)`);
-  console.log(`   GET  /api/auth/verificar - Verificar token (autenticado)`);
-  console.log(`   POST /api/imagens/gerar - Gerar imagem (autenticado)`);
-  console.log(`   GET  /api/imagens - Listar imagens (autenticado)`);
-  console.log(`   GET  /api/imagens/:id - Buscar imagem (autenticado)`);
-  console.log(`   DELETE /api/imagens/:id - Deletar imagem (autenticado)`);
-  console.log(`\n💡 Use Ctrl+C para parar o servidor\n`);
-});
-
-module.exports = app;
+EOF
