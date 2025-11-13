@@ -1,0 +1,561 @@
+/* ========================================
+   ESTILOS ESPECÍFICOS - PÁGINA DE CRIAÇÃO
+   ======================================== */
+
+.main-content {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 30px;
+  margin: 30px 0;
+}
+
+.btn-small {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+.btn-large {
+  padding: 16px 24px;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* ========================================
+   SIDEBAR
+   ======================================== */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.upgrade-card {
+  position: relative;
+  background: linear-gradient(135deg, #fff, #fff5f7);
+  border: 2px solid var(--primary-color);
+}
+
+.upgrade-card .premium-badge {
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow);
+}
+
+.upgrade-card .card-header h3 {
+  color: var(--primary-color);
+  font-size: 1.3rem;
+  margin-top: 10px;
+}
+
+.upgrade-price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-align: center;
+  margin: 15px 0 5px 0;
+}
+
+.upgrade-description {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.upgrade-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.upgrade-benefits li {
+  padding: 10px 0;
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.upgrade-benefits li:last-child {
+  border-bottom: none;
+}
+
+.sidebar-ad {
+  background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  border: 2px dashed var(--border-color);
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ========================================
+   ÁREA DE CRIAÇÃO
+   ======================================== */
+
+.creation-area {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.creation-card {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   OPÇÕES DE COR
+   ======================================== */
+
+.color-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.color-option {
+  height: 80px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+}
+
+.color-option span {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.color-option:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-hover);
+}
+
+.color-option.selected {
+  border-color: var(--primary-color);
+  transform: scale(1.05);
+}
+
+/* ========================================
+   ÁREA DE PREVIEW
+   ======================================== */
+
+.preview-card {
+  animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.image-preview {
+  background: var(--background-color);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.image-preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: var(--shadow-hover);
+}
+
+.preview-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* ========================================
+   ESTADOS DE LOADING
+   ======================================== */
+
+.loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.loading::after {
+  content: "⏳ Gerando sua imagem...";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px 40px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-hover);
+  font-weight: 700;
+  color: var(--primary-color);
+  z-index: 1000;
+}
+
+/* ========================================
+   RESPONSIVIDADE
+   ======================================== */
+
+@media (max-width: 1024px) {
+  .main-content {
+    grid-template-columns: 250px 1fr;
+    gap: 20px;
+  }
+
+  .sidebar-ad {
+    min-height: 400px;
+  }
+
+  .color-options {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    order: 2;
+  }
+
+  .creation-area {
+    order: 1;
+  }
+
+  .sidebar-ad {
+    display: none;
+  }
+
+  .header-content {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .user-info {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-small {
+    width: 100%;
+  }
+
+  .color-options {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .color-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .upgrade-price {
+    font-size: 1.5rem;
+  }
+
+  .btn-large {
+    padding: 14px 20px;
+    font-size: 1.1rem;
+  }
+}
+
+/* ========================================
+   UTILITÁRIOS
+   ======================================== */
+
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  display: block !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+/* ========================================
+   BANNER STREAMDROID
+   ======================================== */
+
+.ad-banner-streamdroid {
+  margin-bottom: 30px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease;
+}
+
+.ad-banner-streamdroid:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.ad-banner-streamdroid a {
+  display: block;
+  text-decoration: none;
+}
+
+.banner-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ========================================
+   GRID DE TEMAS
+   ======================================== */
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+  background: var(--background-color);
+  border-radius: 8px;
+}
+
+.theme-option {
+  background: white;
+  border: 3px solid transparent;
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.theme-option:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+
+.theme-option.selected {
+  border-color: var(--primary-color);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3);
+}
+
+.theme-preview {
+  width: 100%;
+  height: 80px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.theme-icon {
+  font-size: 2rem;
+}
+
+.theme-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  margin-bottom: 5px;
+}
+
+.theme-description {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+/* ========================================
+   PERSONALIZAÇÃO DE TEXTO
+   ======================================== */
+
+.text-customization {
+  background: var(--background-color);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.text-customization h3 {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.char-counter {
+  display: block;
+  text-align: right;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+/* ========================================
+   EDITOR DE IMAGEM COM CANVAS
+   ======================================== */
+
+.image-editor {
+  position: relative;
+  background: var(--background-color);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#imageCanvas {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: var(--shadow-hover);
+  cursor: move;
+  border: 2px solid var(--border-color);
+}
+
+.sponsor-area {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px dashed var(--primary-color);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.sponsor-area span {
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.watermark-info {
+  background: linear-gradient(135deg, #fff5f7, #ffe4e1);
+  border-left: 4px solid var(--primary-color);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* ========================================
+   RESPONSIVIDADE - NOVOS ELEMENTOS
+   ======================================== */
+
+@media (max-width: 768px) {
+  .theme-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    max-height: 300px;
+  }
+
+  .theme-preview {
+    height: 60px;
+  }
+
+  .theme-icon {
+    font-size: 1.5rem;
+  }
+
+  .theme-name {
+    font-size: 0.8rem;
+  }
+
+  .theme-description {
+    font-size: 0.7rem;
+  }
+
+  .text-customization {
+    padding: 15px;
+  }
+
+  #imageCanvas {
+    max-width: 100%;
+  }
+
+  .sponsor-area {
+    height: 60px;
+  }
+
+  .sponsor-area span {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ad-banner-streamdroid {
+    margin-bottom: 20px;
+  }
+}
