@@ -27,11 +27,11 @@
 
         <!-- CONTEÚDO PRINCIPAL -->
         <main class="container">
-            <!-- BANNER DE PROPAGANDA TOPO - STREAMDROID -->
-            <div class="ad-banner ad-banner-streamdroid">
-                <a href="#" target="_blank">
-                    <img src="images/banner-streamdroid.png" alt="StreamDroid - O Melhor servidor de TV por Streaming do Brasil" class="banner-image">
-                </a>
+            <!-- BANNER DE PROPAGANDA TOPO -->
+            <div class="ad-banner">
+                <div class="ad-banner-content">
+                    <p>📢 Espaço para propaganda - Banner Topo (728x90 ou responsivo)</p>
+                </div>
             </div>
 
             <div class="main-content">
@@ -70,7 +70,7 @@
                     <div id="creationForm" class="card creation-card">
                         <div class="card-header">
                             <h2>Crie sua imagem personalizada</h2>
-                            <p>Escolha o tema, personalize o texto e posicione onde desejar</p>
+                            <p>Escolha o fundo, tema de cor e mensagem</p>
                         </div>
 
                         <div class="card-body">
@@ -93,95 +93,93 @@
                                     </select>
                                 </div>
 
-                                <!-- SELEÇÃO DE TEMA DE FUNDO -->
+                                <!-- SELEÇÃO DE FUNDO -->
                                 <div class="form-group">
-                                    <label>Escolha o tema de fundo</label>
-                                    <div class="theme-grid" id="themeGrid">
-                                        <!-- Os temas serão carregados dinamicamente via JavaScript -->
-                                    </div>
-                                </div>
-
-                                <!-- MENSAGEM PRINCIPAL -->
-                                <div class="form-group">
-                                    <label for="mensagemPrincipal">Mensagem principal (máx. 150 caracteres)</label>
-                                    <textarea 
-                                        id="mensagemPrincipal" 
-                                        name="mensagemPrincipal" 
-                                        class="form-control" 
-                                        placeholder="Digite sua mensagem..."
-                                        rows="3"
-                                        maxlength="150"
-                                        required
-                                    ></textarea>
-                                    <small class="char-counter"><span id="msgCounter">0</span>/150 caracteres</small>
-                                </div>
-
-                                <!-- DEDICATÓRIA -->
-                                <div class="form-group">
-                                    <label for="dedicatoria">Dedicatória (opcional - máx. 100 caracteres)</label>
-                                    <input 
-                                        type="text" 
-                                        id="dedicatoria" 
-                                        name="dedicatoria" 
-                                        class="form-control" 
-                                        placeholder="Ex: Com carinho, Maria"
-                                        maxlength="100"
-                                    >
-                                    <small class="char-counter"><span id="dedCounter">0</span>/100 caracteres</small>
-                                </div>
-
-                                <!-- PERSONALIZAÇÃO DE TEXTO -->
-                                <div class="text-customization">
-                                    <h3>Personalização do Texto</h3>
-                                    
-                                    <!-- TIPO DE FONTE -->
-                                    <div class="form-group">
-                                        <label for="tipoFonte">Tipo de fonte</label>
-                                        <select id="tipoFonte" name="tipoFonte" class="form-control">
-                                            <option value="manuscrito">Manuscrito</option>
-                                            <option value="arial" selected>Arial</option>
-                                            <option value="arial-black">Arial Black</option>
-                                            <option value="comic-sans">Comic Sans</option>
-                                            <option value="times-new-roman">Times New Roman</option>
-                                            <option value="georgia">Georgia</option>
-                                        </select>
-                                    </div>
-
-                                    <!-- TAMANHO DO TEXTO -->
-                                    <div class="form-group">
-                                        <label for="tamanhoTexto">Tamanho do texto</label>
-                                        <select id="tamanhoTexto" name="tamanhoTexto" class="form-control">
-                                            <option value="pequeno">Pequeno</option>
-                                            <option value="medio" selected>Médio</option>
-                                            <option value="grande">Grande</option>
-                                            <option value="gigante">Gigante</option>
-                                        </select>
-                                    </div>
-
-                                    <!-- COR DO TEXTO -->
-                                    <div class="form-group">
-                                        <label for="corTexto">Cor do texto</label>
-                                        <div class="color-options">
-                                            <div class="color-option" data-color="white" style="background: white; border: 2px solid #ddd;">
-                                                <span style="color: #333;">Aa</span>
-                                            </div>
-                                            <div class="color-option selected" data-color="black" style="background: #333;">
-                                                <span style="color: white;">Aa</span>
-                                            </div>
-                                            <div class="color-option" data-color="gold" style="background: linear-gradient(135deg, #ffd700, #ffed4e);">
-                                                <span style="color: #333;">Aa</span>
-                                            </div>
-                                            <div class="color-option" data-color="pink" style="background: linear-gradient(135deg, #ff6b9d, #ffa0c0);">
-                                                <span style="color: white;">Aa</span>
-                                            </div>
-                                            <div class="color-option" data-color="blue" style="background: linear-gradient(135deg, #4a69bd, #6a89cc);">
-                                                <span style="color: white;">Aa</span>
-                                            </div>
-                                            <div class="color-option" data-color="green" style="background: linear-gradient(135deg, #00b894, #55efc4);">
-                                                <span style="color: white;">Aa</span>
-                                            </div>
+                                    <label>Escolha o fundo da imagem</label>
+                                    <div class="image-grid" id="backgroundGrid">
+                                        <div class="image-option" data-bg="carta1">
+                                            <img src="https://via.placeholder.com/150/ff6b9d/ffffff?text=Carta+1" alt="Carta 1">
+                                        </div>
+                                        <div class="image-option" data-bg="carta2">
+                                            <img src="https://via.placeholder.com/150/c44569/ffffff?text=Carta+2" alt="Carta 2">
+                                        </div>
+                                        <div class="image-option" data-bg="postal1">
+                                            <img src="https://via.placeholder.com/150/ffa07a/ffffff?text=Postal+1" alt="Postal 1">
+                                        </div>
+                                        <div class="image-option" data-bg="postal2">
+                                            <img src="https://via.placeholder.com/150/ff9a9e/ffffff?text=Postal+2" alt="Postal 2">
+                                        </div>
+                                        <div class="image-option" data-bg="natal1">
+                                            <img src="https://via.placeholder.com/150/d63031/ffffff?text=Natal+1" alt="Natal 1">
+                                        </div>
+                                        <div class="image-option" data-bg="natal2">
+                                            <img src="https://via.placeholder.com/150/00b894/ffffff?text=Natal+2" alt="Natal 2">
+                                        </div>
+                                        <div class="image-option" data-bg="aniversario1">
+                                            <img src="https://via.placeholder.com/150/fdcb6e/ffffff?text=Aniver+1" alt="Aniversário 1">
+                                        </div>
+                                        <div class="image-option" data-bg="aniversario2">
+                                            <img src="https://via.placeholder.com/150/e17055/ffffff?text=Aniver+2" alt="Aniversário 2">
                                         </div>
                                     </div>
+                                </div>
+
+                                <!-- TEMA DE COR -->
+                                <div class="form-group">
+                                    <label for="corTexto">Tema de cor do texto</label>
+                                    <div class="color-options">
+                                        <div class="color-option" data-color="white" style="background: white; border: 2px solid #ddd;">
+                                            <span style="color: #333;">Aa</span>
+                                        </div>
+                                        <div class="color-option" data-color="black" style="background: #333;">
+                                            <span style="color: white;">Aa</span>
+                                        </div>
+                                        <div class="color-option" data-color="gold" style="background: linear-gradient(135deg, #ffd700, #ffed4e);">
+                                            <span style="color: #333;">Aa</span>
+                                        </div>
+                                        <div class="color-option" data-color="pink" style="background: linear-gradient(135deg, #ff6b9d, #ffa0c0);">
+                                            <span style="color: white;">Aa</span>
+                                        </div>
+                                        <div class="color-option" data-color="blue" style="background: linear-gradient(135deg, #4a69bd, #6a89cc);">
+                                            <span style="color: white;">Aa</span>
+                                        </div>
+                                        <div class="color-option" data-color="green" style="background: linear-gradient(135deg, #00b894, #55efc4);">
+                                            <span style="color: white;">Aa</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- TIPO DE MENSAGEM -->
+                                <div class="form-group">
+                                    <label for="tipoMensagem">Tipo de mensagem</label>
+                                    <select id="tipoMensagem" name="tipoMensagem" class="form-control">
+                                        <option value="personalizada">Personalizada (com nome)</option>
+                                        <option value="generica">Genérica (sem nome)</option>
+                                    </select>
+                                </div>
+
+                                <!-- NOME DO DESTINATÁRIO -->
+                                <div class="form-group" id="nomeDestinatarioGroup">
+                                    <label for="nomeDestinatario">Nome do destinatário</label>
+                                    <input 
+                                        type="text" 
+                                        id="nomeDestinatario" 
+                                        name="nomeDestinatario" 
+                                        class="form-control" 
+                                        placeholder="Ex: Márcia"
+                                    >
+                                </div>
+
+                                <!-- MENSAGEM ADICIONAL -->
+                                <div class="form-group">
+                                    <label for="mensagemAdicional">Mensagem adicional (opcional)</label>
+                                    <textarea 
+                                        id="mensagemAdicional" 
+                                        name="mensagemAdicional" 
+                                        class="form-control" 
+                                        placeholder="Digite uma mensagem especial..."
+                                        rows="3"
+                                    ></textarea>
                                 </div>
 
                                 <!-- BOTÃO CRIAR -->
@@ -192,27 +190,20 @@
                         </div>
                     </div>
 
-                    <!-- ÁREA DE PREVIEW E EDIÇÃO (OCULTA INICIALMENTE) -->
+                    <!-- ÁREA DE PREVIEW (OCULTA INICIALMENTE) -->
                     <div id="previewArea" class="card preview-card" style="display: none;">
                         <div class="card-header">
-                            <h2>Personalize sua imagem</h2>
-                            <p>Arraste os textos para posicioná-los onde desejar</p>
+                            <h2>Sua imagem está pronta!</h2>
                         </div>
                         <div class="card-body">
-                            <!-- CANVAS DE EDIÇÃO -->
-                            <div class="image-editor">
-                                <canvas id="imageCanvas"></canvas>
+                            <div class="image-preview">
+                                <img id="generatedImage" src="" alt="Imagem gerada">
                                 
-                                <!-- ÁREA RESERVADA PARA PROPAGANDA -->
-                                <div class="sponsor-area" id="sponsorArea">
-                                    <span>⚠️ Área reservada para propaganda do patrocinador</span>
+                                <!-- AVISO PARA USUÁRIOS GRATUITOS -->
+                                <div class="watermark-info" id="watermarkInfo">
+                                    ℹ️ Esta imagem contém a marca "Criado por: Gerador de Abraços" e um QR Code. 
+                                    Para imagens sem marca d'água, adquira o plano Premium.
                                 </div>
-                            </div>
-
-                            <!-- AVISO PARA USUÁRIOS GRATUITOS -->
-                            <div class="watermark-info" id="watermarkInfo">
-                                ℹ️ Esta imagem contém a marca "Criado por: Gerador de Abraços" e um QR Code. 
-                                Para imagens sem marca d'água, adquira o plano Premium.
                             </div>
 
                             <div class="preview-actions">
@@ -245,8 +236,6 @@
         </footer>
     </div>
 
-    <!-- Scripts -->
-    <script src="js/temas-fundo.js"></script>
     <script src="js/criar.js"></script>
 </body>
 </html>
