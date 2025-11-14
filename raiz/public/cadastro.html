@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Gerador de Abraços</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cadastro.css">
+</head>
+<body>
+    <div class="main-wrapper">
+        <!-- HEADER -->
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <h1>💌 Gerador de Abraços</h1>
+                    <p>Crie wallpapers e figurinhas personalizadas</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="container">
+            <div class="cadastro-wrapper">
+                <!-- BANNER DE PROPAGANDA TOPO -->
+                <div class="ad-banner">
+                    <div class="ad-banner-content">
+                        <p>📢 Espaço para propaganda - Banner Topo</p>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO DE CADASTRO -->
+                <div class="cadastro-section">
+                    <div class="cadastro-card card">
+                        <div class="card-header">
+                            <h2>Bem-vindo ao Gerador de Abraços!</h2>
+                            <p>Cadastre-se gratuitamente e ganhe <strong>8 imagens por mês</strong></p>
+                        </div>
+
+                        <div class="card-body">
+                            <form id="cadastroForm" class="cadastro-form">
+                                <div class="form-group">
+                                    <label for="nome">Nome completo *</label>
+                                    <input 
+                                        type="text" 
+                                        id="nome" 
+                                        name="nome" 
+                                        class="form-control" 
+                                        placeholder="Digite seu nome completo"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">E-mail *</label>
+                                    <input 
+                                        type="email" 
+                                        id="email" 
+                                        name="email" 
+                                        class="form-control" 
+                                        placeholder="seu@email.com"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="whatsapp">WhatsApp *</label>
+                                    <input 
+                                        type="tel" 
+                                        id="whatsapp" 
+                                        name="whatsapp" 
+                                        class="form-control" 
+                                        placeholder="(00) 00000-0000"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="form-group checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="termos" name="termos" required>
+                                        <span>Aceito os termos de uso e política de privacidade</span>
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    Criar conta gratuita
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="benefits-section">
+                            <h3>O que você ganha:</h3>
+                            <ul class="benefits-list">
+                                <li>✅ 8 imagens personalizadas por mês gratuitamente</li>
+                                <li>✅ Escolha de fundos e temas de cores</li>
+                                <li>✅ Mensagens personalizadas ou genéricas</li>
+                                <li>✅ Temas para datas comemorativas</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- CARD DE PLANO PREMIUM -->
+                    <div class="premium-card card">
+                        <div class="premium-badge">PREMIUM</div>
+                        <div class="card-header">
+                            <h2>Plano Premium</h2>
+                            <p class="price">R$ 25,00</p>
+                            <p class="price-description">por pacote de 20 imagens</p>
+                        </div>
+                        <div class="card-body">
+                            <ul class="premium-benefits">
+                                <li>🎨 20 imagens personalizadas</li>
+                                <li>🚫 Sem marca d'água</li>
+                                <li>🎯 Qualidade premium</li>
+                                <li>📦 Compre quantos pacotes quiser</li>
+                            </ul>
+                            <button class="btn btn-secondary btn-block" disabled>
+                                Disponível após cadastro
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARROSSEL DE PROPAGANDA -->
+                <div class="carousel-ad">
+                    <div class="ad-banner-content">
+                        <p>🎪 Espaço para propaganda - Carrossel de Produtos</p>
+                    </div>
+                </div>
+
+                <!-- GALERIA DE EXEMPLOS -->
+                <div class="examples-section card">
+                    <div class="card-header">
+                        <h2>Exemplos de imagens que você pode criar</h2>
+                    </div>
+                    <div class="examples-grid">
+                        <div class="example-item">
+                            <div class="example-placeholder">
+                                <p>📮 Carta</p>
+                            </div>
+                            <p class="example-label">Cartas personalizadas</p>
+                        </div>
+                        <div class="example-item">
+                            <div class="example-placeholder">
+                                <p>🎄 Natal</p>
+                            </div>
+                            <p class="example-label">Cartões de Natal</p>
+                        </div>
+                        <div class="example-item">
+                            <div class="example-placeholder">
+                                <p>🎂 Aniversário</p>
+                            </div>
+                            <p class="example-label">Felicitações</p>
+                        </div>
+                        <div class="example-item">
+                            <div class="example-placeholder">
+                                <p>☀️ Bom dia</p>
+                            </div>
+                            <p class="example-label">Mensagens diárias</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2024 Gerador de Abraços - Todos os direitos reservados</p>
+                <p>Crie mensagens especiais para pessoas especiais 💕</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/cadastro.js"></script>
+</body>
+</html>
